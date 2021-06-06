@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantList;
 import com.upgrad.FoodOrderingApp.api.model.RestaurantListResponse;
 import com.upgrad.FoodOrderingApp.service.businness.CategoryService;
-import com.upgrad.FoodOrderingApp.service.businness.CustomerService;
+import com.upgrad.FoodOrderingApp.service.businness.CustomerService; 
 import com.upgrad.FoodOrderingApp.service.businness.ItemService;
 import com.upgrad.FoodOrderingApp.service.businness.RestaurantService;
+import com.upgrad.FoodOrderingApp.service.entity.*;
 import com.upgrad.FoodOrderingApp.service.exception.AuthorizationFailedException;
 import com.upgrad.FoodOrderingApp.service.exception.CategoryNotFoundException;
 import com.upgrad.FoodOrderingApp.service.exception.InvalidRatingException;
@@ -25,6 +26,7 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static com.upgrad.FoodOrderingApp.service.common.ItemType.NON_VEG;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -53,7 +55,7 @@ public class RestaurantControllerTest {
     @MockBean
     private CustomerService mockCustomerService;
 
-    // ------------------------------------------ GET /restaurant/{restaurant_id} ------------------------------------------
+     // ------------------------------------------ GET /restaurant/{restaurant_id} ------------------------------------------
 
     //This test case passes when you get restaurant details based on restaurant id.
     @Test
@@ -137,7 +139,7 @@ public class RestaurantControllerTest {
         final RestaurantList restaurantList = restaurantListResponse.getRestaurants().get(0);
         assertEquals(restaurantList.getId().toString(), restaurantEntity.getUuid());
         assertEquals(restaurantList.getAddress().getId().toString(), restaurantEntity.getAddress().getUuid());
-        assertEquals(restaurantList.getAddress().getState().getId().toString(), restaurantEntity.getAddress().getState().getUuid());
+        assertEquals(restaurantList.getAddress().getState().getId().toString(), restaurantEntity.getAddress().getState().getStateUuid());
 
         verify(mockRestaurantService, times(1)).restaurantsByName("someRestaurantName");
         verify(mockCategoryService, times(1)).getCategoriesByRestaurant(restaurantEntity.getUuid());
@@ -158,7 +160,7 @@ public class RestaurantControllerTest {
     }
 
 
-    // ------------------------------------------ GET /restaurant/category/{category_id} ------------------------------------------
+     // ------------------------------------------ GET /restaurant/category/{category_id} ------------------------------------------
 
     //This test case passes when you are able to retrieve restaurant belonging to any particular categories.
     @Test
@@ -182,7 +184,7 @@ public class RestaurantControllerTest {
         final RestaurantList restaurantList = restaurantListResponse.getRestaurants().get(0);
         assertEquals(restaurantList.getId().toString(), restaurantEntity.getUuid());
         assertEquals(restaurantList.getAddress().getId().toString(), restaurantEntity.getAddress().getUuid());
-        assertEquals(restaurantList.getAddress().getState().getId().toString(), restaurantEntity.getAddress().getState().getUuid());
+        assertEquals(restaurantList.getAddress().getState().getId().toString(), restaurantEntity.getAddress().getState().getStateUuid());
 
         verify(mockRestaurantService, times(1)).restaurantByCategory("someCategoryId");
         verify(mockCategoryService, times(1)).getCategoriesByRestaurant(restaurantEntity.getUuid());
@@ -216,7 +218,6 @@ public class RestaurantControllerTest {
         verify(mockRestaurantService, times(1)).restaurantByCategory("someCategoryId");
     }
 
-
     // ------------------------------------------ GET /restaurant ------------------------------------------
 
     //This test case passes when you able to fetch the list of all restaurants.
@@ -241,7 +242,7 @@ public class RestaurantControllerTest {
         final RestaurantList restaurantList = restaurantListResponse.getRestaurants().get(0);
         assertEquals(restaurantList.getId().toString(), restaurantEntity.getUuid());
         assertEquals(restaurantList.getAddress().getId().toString(), restaurantEntity.getAddress().getUuid());
-        assertEquals(restaurantList.getAddress().getState().getId().toString(), restaurantEntity.getAddress().getState().getUuid());
+        assertEquals(restaurantList.getAddress().getState().getId().toString(), restaurantEntity.getAddress().getState().getStateUuid());
 
         verify(mockRestaurantService, times(1)).restaurantsByRating();
         verify(mockCategoryService, times(1)).getCategoriesByRestaurant(restaurantEntity.getUuid());
@@ -465,3 +466,4 @@ public class RestaurantControllerTest {
         return restaurantEntity;
     }
 }
+
