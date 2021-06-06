@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 /**
  * Enabling the component scan and entity scan of classes in the below mentioned "com.upgrad.FoodOrderingApp.service" and "com.upgrad.FoodOrderingApp.service.entity" packages respectively.
  */
+
+/**configuring github */
+
 @Configuration
 @ComponentScan("com.upgrad.FoodOrderingApp.service")
 @EntityScan("com.upgrad.FoodOrderingApp.service.entity")
