@@ -1,3 +1,4 @@
+
 package com.upgrad.FoodOrderingApp.api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.UUID;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -41,7 +43,7 @@ public class PaymentControllerTest {
         paymentEntity.setUuid(paymentId);
         paymentEntity.setPaymentName("samplePaymentName");
 
-        when(mockPaymentService.getAllPaymentMethods())
+        when(mockPaymentService.getAllPayments())
                 .thenReturn(Collections.singletonList(paymentEntity));
 
         final String response = mockMvc
@@ -50,10 +52,11 @@ public class PaymentControllerTest {
                 .andReturn().getResponse().getContentAsString();
 
         final PaymentListResponse paymentResponses = new ObjectMapper().readValue(response, PaymentListResponse.class);
-        assertEquals(paymentResponses.getPaymentMethods().size(), 1);
+        assertEquals(1, paymentResponses.getPaymentMethods().size());
         assertEquals(paymentResponses.getPaymentMethods().get(0).getId().toString(), paymentId);
-        assertEquals(paymentResponses.getPaymentMethods().get(0).getPaymentName(), "samplePaymentName");
-        verify(mockPaymentService, times(1)).getAllPaymentMethods();
+        assertEquals("samplePaymentName", paymentResponses.getPaymentMethods().get(0).getPaymentName());
+        verify(mockPaymentService, times(1)).getAllPayments();
     }
 
 }
+

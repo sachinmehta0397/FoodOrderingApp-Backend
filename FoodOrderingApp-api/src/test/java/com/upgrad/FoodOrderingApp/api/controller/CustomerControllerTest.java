@@ -142,7 +142,7 @@ public class CustomerControllerTest {
         customerEntity.setUuid(customerId);
         createdCustomerAuthEntity.setCustomer(customerEntity);
 
-        when(mockCustomerService.authenticate("9090909090", "CorrectPassword"))
+        when(mockCustomerService.authenticateCustomer("9090909090", "CorrectPassword"))
                 .thenReturn(createdCustomerAuthEntity);
 
         mockMvc
@@ -152,7 +152,7 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").value(customerId))
                 .andExpect(header().exists("access-token"));
-        verify(mockCustomerService, times(1)).authenticate("9090909090", "CorrectPassword");
+        verify(mockCustomerService, times(1)).authenticateCustomer("9090909090", "CorrectPassword");
     }
 
     //This test case passes when you have handled the exception of trying to login with invalid authorization format.
@@ -164,14 +164,14 @@ public class CustomerControllerTest {
                         .header("authorization", "Basic " + getEncoder().encodeToString(":".getBytes())))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("code").value("ATH-003"));
-        verify(mockCustomerService, times(0)).authenticate(anyString(), anyString());
+        verify(mockCustomerService, times(0)).authenticateCustomer(anyString(), anyString());
     }
 
     //This test case passes when you have handled the exception of trying to login with a contact number that is not
     // registered yet.
     @Test
     public void shouldNotLoginIfNoDataPresentForGivenMobileNo() throws Exception {
-        when(mockCustomerService.authenticate("123", "CorrectPassword"))
+        when(mockCustomerService.authenticateCustomer("123", "CorrectPassword"))
                 .thenThrow(new AuthenticationFailedException("ATH-001", "This contact number does not exist"));
         mockMvc
                 .perform(post("/customer/login")
@@ -179,13 +179,13 @@ public class CustomerControllerTest {
                         .header("authorization", "Basic " + getEncoder().encodeToString("123:CorrectPassword".getBytes())))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("code").value("ATH-001"));
-        verify(mockCustomerService, times(1)).authenticate("123", "CorrectPassword");
+        verify(mockCustomerService, times(1)).authenticateCustomer("123", "CorrectPassword");
     }
 
     //This test case passes when you have handled the exception of trying to login with incorrect password.
     @Test
     public void shouldNotLoginForWrongPassword() throws Exception {
-        when(mockCustomerService.authenticate("9090909090", "IncorrectPassword"))
+        when(mockCustomerService.authenticateCustomer("9090909090", "IncorrectPassword"))
                 .thenThrow(new AuthenticationFailedException("ATH-002", "Password failed"));
         mockMvc
                 .perform(post("/customer/login")
@@ -193,7 +193,7 @@ public class CustomerControllerTest {
                         .header("authorization", "Basic " + getEncoder().encodeToString("9090909090:IncorrectPassword".getBytes())))
                 .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("code").value("ATH-002"));
-        verify(mockCustomerService, times(1)).authenticate("9090909090", "IncorrectPassword");
+        verify(mockCustomerService, times(1)).authenticateCustomer("9090909090", "IncorrectPassword");
     }
 
     // ----------------------------- POST /customer/logout --------------------------------

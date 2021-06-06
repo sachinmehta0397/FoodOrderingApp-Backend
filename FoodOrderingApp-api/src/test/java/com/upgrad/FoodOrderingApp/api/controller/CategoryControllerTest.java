@@ -20,12 +20,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collections;
 import java.util.UUID;
 
+import static org.junit.Assert.*;
 import static com.upgrad.FoodOrderingApp.service.common.ItemType.NON_VEG;
 import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 // This class contains all the test cases regarding the category controller
 @RunWith(SpringRunner.class)
@@ -139,3 +141,4 @@ public class CategoryControllerTest {
 
 
 }
+
