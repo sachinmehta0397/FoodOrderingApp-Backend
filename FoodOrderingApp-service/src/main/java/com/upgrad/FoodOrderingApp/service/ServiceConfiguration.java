@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  */
 
 /**configuring github */
-
+git
 @Configuration
 @ComponentScan("com.upgrad.FoodOrderingApp.service")
 @EntityScan("com.upgrad.FoodOrderingApp.service.entity")
